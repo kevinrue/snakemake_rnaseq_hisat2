@@ -1,3 +1,4 @@
+## FastQC
 
 
 rule fastqc_on_fastq:
