@@ -21,7 +21,8 @@ def get_final_output():
     u = fastq_files[["fastq1", "fastq2"]].dropna()
     fastqs = u.fastq1.tolist() + u.fastq2.tolist()
     fastqs = [os.path.basename(fastq) for fastq in fastqs]
-    fastqs = [fastq.rsplit(".fastq.gz", 1)[0] for fastq in fastqs]
+    fastqs = [fastq.rsplit(".gz", 1)[0] for fastq in fastqs]
+    fastqs = [fastq.rsplit(".fastq", 1)[0] for fastq in fastqs]
 
     final_output = expand(
         "results/qc/fastqc/{fastq_file}_fastqc.html",
