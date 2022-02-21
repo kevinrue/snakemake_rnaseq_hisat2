@@ -16,6 +16,6 @@ rule fastqc_on_fastq:
             -o results/qc/fastqc \
             --nogroup \
             {input} \
-            > results/qc/fastqc/{wildcards.fastq_prefix}_fastqc.html.log \
+            > {log} \
             2>&1
         """
