@@ -28,6 +28,7 @@ def get_final_output():
         "results/qc/fastqc/{fastq_file}_fastqc.html",
         fastq_file=fastqs,
     )
+    final_output.append("results/reports/multiqc/fastq.html")
     return final_output
 
 
@@ -39,3 +40,14 @@ def get_fastqc_input(wildcards):
     u = u.set_index(["basename_prefix"], drop=False)
     input_file = u.loc[wildcards.fastq_prefix, ["fastq"]].tolist()
     return input_file
+
+
+def get_fastqc_reports():
+    u = fastq_files.dropna()
+    u["index"] = range(u.shape[0])
+    u = pd.wide_to_long(u, ["fastq"], i="index", j="read")
+    fastq_prefix = [os.path.basename(x).rstrip("fastq.gz") for x in u.fastq]
+    fastq_reports = [
+        f"results/qc/fastqc/{prefix}_fastqc.html" for prefix in fastq_prefix
+    ]
+    return fastq_reports
