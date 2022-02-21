@@ -21,6 +21,9 @@ rule fastqc_on_fastq:
         """
 
 
+## MultiQC
+
+
 rule multiqc_on_fastqc:
     input:
         get_fastqc_reports(),
