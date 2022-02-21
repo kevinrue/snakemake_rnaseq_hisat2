@@ -1,10 +1,10 @@
-# Snakemake workflow: `<name>`
+# Snakemake workflow: snakemake_rnaseq_hisat2
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
 [![GitHub actions status](https://github.com/kevinrue/snakemake_rnaseq_hisat2/workflows/Tests/badge.svg?branch=main)](https://github.com/kevinrue/snakemake_rnaseq_hisat2/actions?query=branch%3Amain+workflow%3ATests)
 
 
-A Snakemake workflow for `<description>`
+A Snakemake workflow for the quality control and mapping of paired-end RNA-seq data.
 
 
 ## Usage
