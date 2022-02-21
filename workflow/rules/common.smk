@@ -47,5 +47,7 @@ def get_fastqc_reports():
     u["index"] = range(u.shape[0])
     u = pd.wide_to_long(u, ["fastq"], i="index", j="read")
     fastq_prefix = [os.path.basename(x).rstrip("fastq.gz") for x in u.fastq]
-    fastq_reports = [f"results/qc/fastqc/{prefix}_fastqc.html" for prefix in fastq_prefix]
+    fastq_reports = [
+        f"results/qc/fastqc/{prefix}_fastqc.html" for prefix in fastq_prefix
+    ]
     return fastq_reports
