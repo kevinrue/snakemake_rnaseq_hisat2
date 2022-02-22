@@ -8,6 +8,8 @@ ftp = FTP.RemoteProvider()
 
 # from snakemake.utils import validate
 
+# validate(config, schema="../schemas/config.schema.yaml")
+
 fastq_files = (
     pd.read_csv(
         config["fastq_files"],
@@ -34,6 +36,10 @@ def get_final_output():
         fastq_file=fastqs,
     )
     final_output.append("results/reports/multiqc/fastq.html")
+    final_output.append(expand(
+        "results/hisat2/{sample_id}.bam",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    ))
     return final_output
 
 
@@ -56,3 +62,21 @@ def get_fastqc_reports():
         f"results/qc/fastqc/{prefix}_fastqc.html" for prefix in fastq_prefix
     ]
     return fastq_reports
+
+
+def get_hisat2_input(wildcards):
+    u = fastq_files.dropna()
+    fastq1 = fastq_files["fastq1"].groupby(
+        fastq_files['sample_id']
+    ).aggregate(
+        lambda x: x.tolist()
+    ).to_dict()
+    fastq2 = fastq_files["fastq2"].groupby(
+        fastq_files['sample_id']
+    ).aggregate(
+        lambda x: x.tolist()
+    ).to_dict()
+    return({
+        "fastq1": fastq1[wildcards.sample_id],
+        "fastq2": fastq2[wildcards.sample_id],
+    })

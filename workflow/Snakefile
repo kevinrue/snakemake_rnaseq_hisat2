@@ -7,7 +7,7 @@ configfile: "config/config.yaml"
 include: "rules/common.smk"
 include: "rules/qc.smk"
 include: "rules/ref.smk"
-
+include: "rules/map.smk"
 
 ##### target rules #####
 
