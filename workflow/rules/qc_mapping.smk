@@ -15,6 +15,5 @@ rule idxstats_on_bam:
         samtools idxstats \
             {input} \
             > {output} \
-            > {log} \
-            2>&1
+            2> {log}
         """
