@@ -78,3 +78,31 @@ rule picard_insert_size_on_bam:
             > {log} \
             2>&1
         """
+
+
+## MultiQC
+
+
+rule multiqc_on_samples:
+    input:
+        get_sample_reports(),
+    output:
+        "results/reports/multiqc/samples.html",
+    log:
+        "results/reports/multiqc/samples.log",
+    conda:
+        "../envs/multiqc.yaml"
+    shell:
+        """
+        multiqc \
+            -n samples.html \
+            -o results/reports/multiqc \
+            results/hisat2 \
+            results/qc/samtools/idxstats \
+            results/qc/samtools/flagstat \
+            results/qc/picard/CollectAlignmentSummaryMetrics \
+            results/qc/picard/CollectInsertSizeMetrics \
+            results/featurecounts \
+            > {log} \
+            2>&1
+        """

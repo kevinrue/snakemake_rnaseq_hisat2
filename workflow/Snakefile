@@ -8,8 +8,8 @@ include: "rules/common.smk"
 include: "rules/qc_reads.smk"
 include: "rules/ref.smk"
 include: "rules/map.smk"
-include: "rules/qc_mapping.smk"
 include: "rules/count.smk"
+include: "rules/qc_samples.smk"
 
 ##### target rules #####
 

@@ -35,7 +35,7 @@ def get_final_output():
         "results/qc/fastqc/{fastq_file}_fastqc.html",
         fastq_file=fastqs,
     )
-    final_output.append("results/reports/multiqc/fastq.html")
+    final_output.append("results/reports/multiqc/reads.html")
     final_output.append(expand(
         "results/qc/samtools/idxstats/{sample_id}",
         sample_id=fastq_files["sample_id"].unique().tolist(),
@@ -52,6 +52,8 @@ def get_final_output():
         "results/qc/picard/CollectInsertSizeMetrics/{sample_id}",
         sample_id=fastq_files["sample_id"].unique().tolist(),
     ))
+    final_output.append("results/featurecounts/counts")
+    final_output.append("results/reports/multiqc/samples.html")
     return final_output
 
 
@@ -65,7 +67,7 @@ def get_fastqc_input(wildcards):
     return input_file
 
 
-def get_fastqc_reports():
+def get_reads_reports():
     u = fastq_files.dropna()
     u["index"] = range(u.shape[0])
     u = pd.wide_to_long(u, ["fastq"], i="index", j="read")
@@ -103,3 +105,24 @@ def get_featurecounts_input():
         sample_id=sample_ids,
     )
     return bam_files
+
+
+def get_sample_reports():
+    u = fastq_files.dropna()
+    sample_reports = expand(
+        "results/qc/samtools/idxstats/{sample_id}",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    )
+    sample_reports.append(expand(
+        "results/qc/samtools/flagstat/{sample_id}",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    ))
+    sample_reports.append(expand(
+        "results/qc/picard/CollectAlignmentSummaryMetrics/{sample_id}",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    ))
+    sample_reports.append(expand(
+        "results/qc/picard/CollectInsertSizeMetrics/{sample_id}",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    ))
+    return sample_reports

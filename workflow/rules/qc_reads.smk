@@ -24,19 +24,19 @@ rule fastqc_on_fastq:
 ## MultiQC
 
 
-rule multiqc_on_fastqc:
+rule multiqc_on_reads:
     input:
-        get_fastqc_reports(),
+        get_reads_reports(),
     output:
-        "results/reports/multiqc/fastq.html",
+        "results/reports/multiqc/reads.html",
     log:
-        "results/reports/multiqc/fastq.log",
+        "results/reports/multiqc/reads.log",
     conda:
         "../envs/multiqc.yaml"
     shell:
         """
         multiqc \
-            -n fastq.html \
+            -n reads.html \
             -o results/reports/multiqc \
             results/qc/fastqc \
             > {log} \
