@@ -10,7 +10,7 @@ rule download_genome:
         "resources/genome.log",
     run:
         shell("mv {input} resources/genome.fa.gz")
-        if (bool(re.search(r".gz$", str(input)))):
+        if bool(re.search(r".gz$", str(input))):
             shell("gzip -d resources/genome.fa.gz > {log} 2>&1")
         else:
             shell("mv resources/genome.fa.gz resources/genome.fa")
@@ -18,11 +18,11 @@ rule download_genome:
 
 rule index_genome:
     input:
-        "resources/genome.fa"
+        "resources/genome.fa",
     output:
-        directory("resources/index_genome")
+        directory("resources/index_genome"),
     log:
-        "resources/index_genome.log"
+        "resources/index_genome.log",
     conda:
         "../envs/hisat2.yaml"
     shell:
@@ -37,14 +37,14 @@ rule index_genome:
 
 rule download_gene_annotations:
     input:
-        ftp.remote(config["genes_gtf"])
+        ftp.remote(config["genes_gtf"]),
     output:
         "resources/genes.gtf.gz",
     log:
         "resources/genes.log",
     run:
         shell("mv {input} resources/genes.gtf")
-        if (bool(re.search(r".gtf$", str(input)))):
+        if bool(re.search(r".gtf$", str(input))):
             shell("gzip resources/genes.gtf.gz > {log} 2>&1")
         else:
             shell("mv resources/genes.gtf resources/genes.gtf.gz")

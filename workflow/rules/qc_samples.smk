@@ -44,7 +44,7 @@ rule picard_alignment_metrics_on_bam:
     output:
         "results/qc/picard/CollectAlignmentSummaryMetrics/{sample_id}",
     log:
-        "results/qc/picard/CollectAlignmentSummaryMetrics/{sample_id}.log"
+        "results/qc/picard/CollectAlignmentSummaryMetrics/{sample_id}.log",
     conda:
         "../envs/picard.yaml"
     shell:

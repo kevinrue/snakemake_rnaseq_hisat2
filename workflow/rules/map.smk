@@ -1,5 +1,6 @@
 ## HISAT2
 
+
 rule hisat2_on_fastq:
     input:
         unpack(get_hisat2_input),
