@@ -40,6 +40,10 @@ def get_final_output():
         "results/qc/samtools/idxstats/{sample_id}",
         sample_id=fastq_files["sample_id"].unique().tolist(),
     ))
+    final_output.append(expand(
+        "results/qc/samtools/flagstat/{sample_id}",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    ))
     return final_output
 
 
