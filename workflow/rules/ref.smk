@@ -39,12 +39,12 @@ rule download_gene_annotations:
     input:
         ftp.remote(config["genes_gtf"])
     output:
-        "resources/genes.gtf",
+        "resources/genes.gtf.gz",
     log:
         "resources/genes.log",
     run:
-        shell("mv {input} resources/genes.gtf.gz")
-        if (bool(re.search(r".gz$", str(input)))):
-            shell("gzip -d resources/genes.gtf.gz > {log} 2>&1")
+        shell("mv {input} resources/genes.gtf")
+        if (bool(re.search(r".gtf$", str(input)))):
+            shell("gzip resources/genes.gtf.gz > {log} 2>&1")
         else:
-            shell("mv resources/genes.gtf.gz resources/genes.gtf")
+            shell("mv resources/genes.gtf resources/genes.gtf.gz")

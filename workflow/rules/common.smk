@@ -70,9 +70,10 @@ def get_fastqc_reports():
     u["index"] = range(u.shape[0])
     u = pd.wide_to_long(u, ["fastq"], i="index", j="read")
     fastq_prefix = [os.path.basename(x).rstrip("fastq.gz") for x in u.fastq]
-    fastq_reports = [
-        f"results/qc/fastqc/{prefix}_fastqc.html" for prefix in fastq_prefix
-    ]
+    fastq_reports = expand(
+        "results/qc/fastqc/{prefix}_fastqc.html",
+        prefix=fastq_prefix,
+    )
     return fastq_reports
 
 
@@ -92,3 +93,13 @@ def get_hisat2_input(wildcards):
         "fastq1": fastq1[wildcards.sample_id],
         "fastq2": fastq2[wildcards.sample_id],
     })
+
+
+def get_featurecounts_input():
+    u = fastq_files.dropna()
+    sample_ids = u["sample_id"].unique().tolist()
+    bam_files = expand(
+        "results/hisat2/{sample_id}.bam",
+        sample_id=sample_ids,
+    )
+    return bam_files

@@ -10,3 +10,7 @@ genes_gtf: http://ftp.ensembl.org/pub/release-105/gtf/homo_sapiens/Homo_sapiens.
 hisat2:
     options: --rna-strandness RF
     threads: 2
+
+featurecounts:
+    options: -p -s 2
+    threads: 2
