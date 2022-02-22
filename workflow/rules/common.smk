@@ -1,5 +1,10 @@
 import os
+import re
 import pandas as pd
+
+from snakemake.remote import FTP
+
+ftp = FTP.RemoteProvider()
 
 # from snakemake.utils import validate
 

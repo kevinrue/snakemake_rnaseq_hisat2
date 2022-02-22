@@ -6,6 +6,7 @@ configfile: "config/config.yaml"
 
 include: "rules/common.smk"
 include: "rules/qc.smk"
+include: "rules/ref.smk"
 
 
 ##### target rules #####
@@ -14,3 +15,4 @@ include: "rules/qc.smk"
 rule all:
     input:
         get_final_output(),
+        "resources/genome.fa",

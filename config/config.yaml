@@ -2,3 +2,6 @@
 # Units are technical replicates (e.g. lanes, or resequencing of the same biological
 # sample).
 fastq_files: config/fastq_files.tsv
+
+genome_fasta: http://ftp.ensembl.org/pub/release-104/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.22.fa.gz
+
