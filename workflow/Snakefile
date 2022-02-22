@@ -15,4 +15,4 @@ include: "rules/ref.smk"
 rule all:
     input:
         get_final_output(),
-        "resources/genome.fa",
+        "resources/index_genome",
