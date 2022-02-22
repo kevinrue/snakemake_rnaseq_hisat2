@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/kevinrue/snakemake_rnaseq_hisat2/compare/v1.1.0...v1.2.0) (2022-02-22)
+
+
+### Features
+
+* add rules for mapping, counting, and quality control ([#10](https://www.github.com/kevinrue/snakemake_rnaseq_hisat2/issues/10)) ([6591473](https://www.github.com/kevinrue/snakemake_rnaseq_hisat2/commit/65914734d530d6061641f9287eeff9aaceb37d41))
+
 ## [1.1.0](https://www.github.com/kevinrue/snakemake_rnaseq_hisat2/compare/v1.0.0...v1.1.0) (2022-02-21)
 
 
