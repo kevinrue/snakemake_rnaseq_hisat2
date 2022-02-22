@@ -10,7 +10,7 @@ fastq2 = ",".join(snakemake.input.fastq2)
 os.popen(
     f"hisat2 \
         --threads {snakemake.params.threads} \
-        -x resources/index_genome/genome \
+        -x {snakemake.input.index}/genome \
         -1 {fastq1} \
         -2 {fastq2} \
         {snakemake.params.hisat2} \
