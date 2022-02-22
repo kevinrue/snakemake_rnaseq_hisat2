@@ -4,7 +4,7 @@
 rule hisat2_on_fastq:
     input:
         unpack(get_hisat2_input),
-        index="resources/index_genome"
+        index="resources/index_genome",
     output:
         "results/hisat2/{sample_id}.bam",
     params:
