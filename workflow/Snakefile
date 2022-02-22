@@ -5,7 +5,11 @@ configfile: "config/config.yaml"
 
 
 include: "rules/common.smk"
-include: "rules/qc.smk"
+include: "rules/qc_reads.smk"
+include: "rules/ref.smk"
+include: "rules/map.smk"
+include: "rules/count.smk"
+include: "rules/qc_samples.smk"
 
 
 ##### target rules #####
@@ -14,3 +18,4 @@ include: "rules/qc.smk"
 rule all:
     input:
         get_final_output(),
+        "resources/index_genome",

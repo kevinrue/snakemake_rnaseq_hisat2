@@ -1,7 +1,14 @@
 import os
+import re
 import pandas as pd
 
+from snakemake.remote import FTP
+
+ftp = FTP.RemoteProvider()
+
 # from snakemake.utils import validate
+
+# validate(config, schema="../schemas/config.schema.yaml")
 
 fastq_files = (
     pd.read_csv(
@@ -28,7 +35,33 @@ def get_final_output():
         "results/qc/fastqc/{fastq_file}_fastqc.html",
         fastq_file=fastqs,
     )
-    final_output.append("results/reports/multiqc/fastq.html")
+    final_output.append("results/reports/multiqc/reads.html")
+    final_output.append(
+        expand(
+            "results/qc/samtools/idxstats/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    final_output.append(
+        expand(
+            "results/qc/samtools/flagstat/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    final_output.append(
+        expand(
+            "results/qc/picard/CollectAlignmentSummaryMetrics/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    final_output.append(
+        expand(
+            "results/qc/picard/CollectInsertSizeMetrics/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    final_output.append("results/featurecounts/counts")
+    final_output.append("results/reports/multiqc/samples.html")
     return final_output
 
 
@@ -42,12 +75,70 @@ def get_fastqc_input(wildcards):
     return input_file
 
 
-def get_fastqc_reports():
+def get_reads_reports():
     u = fastq_files.dropna()
     u["index"] = range(u.shape[0])
     u = pd.wide_to_long(u, ["fastq"], i="index", j="read")
     fastq_prefix = [os.path.basename(x).rstrip("fastq.gz") for x in u.fastq]
-    fastq_reports = [
-        f"results/qc/fastqc/{prefix}_fastqc.html" for prefix in fastq_prefix
-    ]
+    fastq_reports = expand(
+        "results/qc/fastqc/{prefix}_fastqc.html",
+        prefix=fastq_prefix,
+    )
     return fastq_reports
+
+
+def get_hisat2_input(wildcards):
+    u = fastq_files.dropna()
+    fastq1 = (
+        fastq_files["fastq1"]
+        .groupby(fastq_files["sample_id"])
+        .aggregate(lambda x: x.tolist())
+        .to_dict()
+    )
+    fastq2 = (
+        fastq_files["fastq2"]
+        .groupby(fastq_files["sample_id"])
+        .aggregate(lambda x: x.tolist())
+        .to_dict()
+    )
+    return {
+        "fastq1": fastq1[wildcards.sample_id],
+        "fastq2": fastq2[wildcards.sample_id],
+    }
+
+
+def get_featurecounts_input():
+    u = fastq_files.dropna()
+    sample_ids = u["sample_id"].unique().tolist()
+    bam_files = expand(
+        "results/hisat2/{sample_id}.bam",
+        sample_id=sample_ids,
+    )
+    return bam_files
+
+
+def get_sample_reports():
+    u = fastq_files.dropna()
+    sample_reports = expand(
+        "results/qc/samtools/idxstats/{sample_id}",
+        sample_id=fastq_files["sample_id"].unique().tolist(),
+    )
+    sample_reports.append(
+        expand(
+            "results/qc/samtools/flagstat/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    sample_reports.append(
+        expand(
+            "results/qc/picard/CollectAlignmentSummaryMetrics/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    sample_reports.append(
+        expand(
+            "results/qc/picard/CollectInsertSizeMetrics/{sample_id}",
+            sample_id=fastq_files["sample_id"].unique().tolist(),
+        )
+    )
+    return sample_reports
