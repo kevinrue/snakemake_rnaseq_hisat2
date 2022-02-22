@@ -37,7 +37,7 @@ def get_final_output():
     )
     final_output.append("results/reports/multiqc/fastq.html")
     final_output.append(expand(
-        "results/hisat2/{sample_id}.bam",
+        "results/qc/samtools/idxstats/{sample_id}",
         sample_id=fastq_files["sample_id"].unique().tolist(),
     ))
     return final_output
