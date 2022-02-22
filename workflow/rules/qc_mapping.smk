@@ -56,3 +56,25 @@ rule picard_alignment_metrics_on_bam:
             2> {log} \
             2>&1
         """
+
+
+rule picard_insert_size_on_bam:
+    input:
+        bam="results/hisat2/{sample_id}.bam",
+        genome="resources/genome.fa",
+    output:
+        "results/qc/picard/CollectInsertSizeMetrics/{sample_id}",
+    log:
+        "results/qc/picard/CollectInsertSizeMetrics/{sample_id}.log",
+    conda:
+        "../envs/picard.yaml"
+    shell:
+        """
+        picard CollectInsertSizeMetrics \
+            -I {input.bam} \
+            -O {output} \
+            -R {input.genome} \
+            -H {output}.pdf \
+            > {log} \
+            2>&1
+        """
