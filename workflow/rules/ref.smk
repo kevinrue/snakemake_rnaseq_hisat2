@@ -3,7 +3,7 @@
 
 rule download_genome:
     input:
-        ftp.remote(config["genome_fasta"])
+        ftp.remote(config["genome_fasta"]),
     output:
         "resources/genome.fa",
     log:

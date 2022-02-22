@@ -91,15 +91,15 @@ def get_hisat2_input(wildcards):
     u = fastq_files.dropna()
     fastq1 = (
         fastq_files["fastq1"]
-        .groupby(fastq_files['sample_id'])
+        .groupby(fastq_files["sample_id"])
         .aggregate(lambda x: x.tolist())
         .to_dict()
     )
     fastq2 = (
         fastq_files["fastq2"]
-        .groupby(fastq_files['sample_id'])
-        .aggregate(lambda x: x.tolist()).
-        to_dict()
+        .groupby(fastq_files["sample_id"])
+        .aggregate(lambda x: x.tolist())
+        .to_dict()
     )
     return {
         "fastq1": fastq1[wildcards.sample_id],
